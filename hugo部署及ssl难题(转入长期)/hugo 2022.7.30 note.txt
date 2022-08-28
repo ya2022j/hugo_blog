@@ -1,0 +1,360 @@
+
+
+2022.7.30 注意事项
+1. 创建之后把baseURL 改为/
+2. 记得在配置文件中加入theme=...
+3. post里面是略读的-->最终在Home里面读取
+总之编辑好直接放在post里面即可
+4. md文件中文命名没有问题
+
+
+尚未解决
+
+1. md还没有清洗
+2. google id没有设置
+
+
+尝试部署
+
+1. 安装 golang，hugo，nginx
+
+/usr/local/hugo/public/...
+
+2。
+
+http://www.javacui.com/service/493.html
+
+https://bbs.huaweicloud.com/blogs/306902
+
+https://itbenkyou.com/
+45.77.22.227
+
+https://www.jianshu.com/p/a5c74136b699
+
+hugo server --bind="0.0.0.0" -v -w -b http://itbenkyou.com/
+
+hugo server --bind="0.0.0.0" -v -w -b https://itbenkyou.com/
+
+/usr/local/hugo
+
+vim config.toml
+
+hugo
+
+cp -r /usr/local/hugo/public/* /usr/local/nginx/html/
+
+
+
+http://45.77.22.227/
+
+
+vim /usr/local/nginx/conf/nginx.conf
+
+
+直接使用nginx 部署成功
+
+
+1. Centos上安装Nginx
+一键安装四个依赖
+
+yum -y install gcc zlib zlib-devel pcre-devel openssl openssl-devel
+安装Nginx：
+cd /usr/local/src
+
+https://nginx.org/download/
+
+wget https://nginx.org/download/nginx-1.23.1.tar.gz
+
+
+
+tar -zxvf nginx-1.23.1.tar.gz
+cd nginx-1.23.1
+./configure --prefix=/usr/local/nginx --with-http_stub_status_module --with-http_ssl_module
+
+Installation instructions
+
+
+
+
+make
+make install
+配置文件：
+
+启动端口配置文件位置linux修改路径/usr/local/nginx/conf/nginx.conf
+
+server {
+    listen       80;
+    server_name  localhost;
+ 
+    #charset koi8-r;
+ 
+    #access_log  logs/host.access.log  main;
+ 
+    location / {
+        root   html;
+        index  index.html index.htm;
+    }
+ 
+    #error_page  404              /404.html;
+ 
+    # redirect server error pages to the static page /50x.html
+    #
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root   html;
+    }
+ 
+    # proxy the PHP scripts to Apache listening on 127.0.0.1:80
+    #
+    #location ~ \.php$ {
+    #    proxy_pass   http://127.0.0.1;
+    #}
+ 
+    # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
+    #
+    #location ~ \.php$ {
+    #    root           html;
+    #    fastcgi_pass   127.0.0.1:9000;
+    #    fastcgi_index  index.php;
+    #    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;
+    #    include        fastcgi_params;
+    #}
+ 
+    # deny access to .htaccess files, if Apache's document root
+    # concurs with nginx's one
+    #
+    #location ~ /\.ht {
+    #    deny  all;
+    #}
+}
+
+启动
+/usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf
+
+停止：ps -ef|grep nginx
+然后kill进程号
+
+或者强制停止
+
+pkill -9 nginx
+
+重启：
+
+在启动命令-c前加-t
+
+/usr/local/nginx/sbin/nginx -t -c /usr/local/nginx/conf/nginx.conf
+
+部署文件：
+/usr/local/nginx/html/
+
+最终把public 放到/usr/local/nginx/html/之下面，可以重启nginx 
+
+
+2. 两个配置的地方
+nginx的配置文件 /usr/local/nginx/conf/nginx.conf
+
+    server {
+        listen       80;
+        server_name  45.77.22.227;
+        root /usr/local/hugo/public;
+        #charset koi8-r;
+
+
+把servie_name 改成ip号或域名。附上
+
+
+
+hugo 原来的config.toml配置文件
+保证baseurl是最终可以访问的地址(目前只有ip,回头改成域名)
+baseurl = "http://45.77.22.227/"
+languageCode = "en-us"
+title = "Karson's Blog"
+
+编写完后，执行
+hugo
+进行编译，
+然后复制到nginx 的项目目录下
+cp -r /usr/local/hugo/public/* /usr/local/nginx/html/
+
+保证nginx启动的是最新的编译后的文件
+
+
+3. 直接访问  http(s)://Domain-Name(or IP)/
+
+config.toml 文件中的 baseURL必须与你的域名（或者 ip ）相一致。不然就会出现如图的问题。格式：
+
+http(s)://Domain-Name(or IP)/
+
+
+就可以了
+
+明天绑定ip和域名，还有http的问题。下周再处理吧！
+
+http://itbenkyou.com/
+
+www.itbenkyou.com
+itbenkyou.com
+
+wget https:/cl.
+
+
+/var/www/html/itbenkyou.com   -d itbenkyou.com
+
+
+./configure –prefix=/usr/local/nginx --with-http_ssl_module
+
+
+
+certbot certonly --webroot -w /usr/local/nginx/html/
+
+
+http://45.77.22.227/
+45.77.22.227--->itbenkyou.com
+
+http://45.77.22.227/
+itbenkyou.com
+
+
+curl http://45.77.22.227/
+
+
+完成ip->http的域名绑定----->
+
+也就是两处配置修改
+
+
+1. config.toml
+
+➜  hugo cat config.toml
+baseurl = "http://itbenkyou.com/"
+languageCode = "en-us"
+title = "Karson's Blog"
+
+2. /usr/local/nginx/conf/nginx.conf
+    server {
+        listen       80;
+        server_name itbenkyou.com www.itbenkyou.com;
+        root /usr/local/hugo/public;
+
+        #charset koi8-r;
+
+
+
+
+
+
+
+
+http-->https
+
+
+certbot certonly --webroot -w /usr/local/nginx/html/ -d itbenkyou.com -m greenbirch2007@yahoo.co.jp --agree-tos
+
+
+
+openssl dhparam -out /usr/local/nginx/sites-enabled/dh4096.pem 4096
+
+需要两个
+1. ssl证书，有免费的（据说只能绑定一个域名），也有收费的
+https://letsencrypt.org/zh-cn/docs/
+
+https://sphard.com/ebooks/gitbook/yuming/vps.html
+
+
+
+
+sudo certbot certonly --webroot -w /src/
+
+2. 再nginx上进行ssl配置重启即可
+
+sudo ls /etc/letsencrypt/live
+
+
+cert.pem
+
+chain.pem
+
+fullchain.pem（公钥）
+
+privkey.pem（私钥）
+
+
+
+
+
+
+# 域名的ssl认证
+
+listen 443 ssl; 
+
+
+
+ssl_certificate /usr/local/ssl/server-nopassword.crt;
+ssl_certificate /usr/local/ssl/server-nopassword.key;
+
+
+
+彻底卸载和删除CentOS上的Nginx
+
+rm -rf file /usr/local/nginx* 
+yum remove nginx
+
+可能是版本太低了！
+
+
+
+sudo vi /etc/nginx/sites-available/itbenkyou.com
+
+
+
+server_name itbenkyou.com  www.itbenkyou.com;
+
+
+sudo certbot --nginx -d itbenkyou.com -d www.itbenkyou.com
+
+
+openssl x509 -in  privkey.pem -out  privkey.crt
+
+
+listen 443 ssl;
+ssl on;
+
+# 必须是crt key
+
+ssl_certificate /etc/letsencrypt/live/itbenkyou.com/fullchain.pem;
+
+ssl_certificate_key /etc/letsencrypt/live/itbenkyou.com/privkey.pem;
+
+fullchain.pem
+
+
+如何将.crt的ssl证书文件转换成.pem格式 转载
+
+openssl x509 -in  fullchain.pem  -out  fullchain.crt
+
+
+listen 443 ssl;
+ssl_certificate /etc/letsencrypt/live/itbenkyou.com/fullchain.pem;
+
+ssl_certificate_key /etc/letsencrypt/live/itbenkyou.com/privkey.pem;
+
+
+ssl_session_timeout 5m;
+
+ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;
+
+ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+
+ssl_prefer_server_ciphers on;
+
+
+
+2022.7.31  
+
+下周只针对ssl的部署进行测试。就测试一本电子书的设置。
+
+
+也就是测试证书的使用。好了之后再迁移到博客上面
+
+
+难题和短期的问题的解决，这是一个比较考验！

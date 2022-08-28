@@ -1,0 +1,16 @@
+
+
+
+使用的是gunicorn
+
+
+进入 应用在的目录，执行以下命令
+
+设置的端口是8000.进程开启了200个？
+然后在nginx的配置文件中，增加一个server的设置 proxy的代理转到8000端口即可。
+
+cd /usr/local/msg
+
+
+
+gunicorn -w 200 -b 0.0.0.0:8000 --access-logfile access.log --error-logfile error.log flask_ebook:app -D
